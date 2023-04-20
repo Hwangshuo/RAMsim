@@ -39,8 +39,6 @@ add_library(dramsim3 SHARED
     src/simple_stats.cc
     src/timing.cc
     src/memory_system.cc
-
-
 )
 
 if (THERMAL)
@@ -89,8 +87,7 @@ set_target_properties(dramsim3 PROPERTIES
 )
 
 # trace CPU, .etc
-# add_executable(dramsim3main src/main.cc src/cpu.cc)
-add_executable(dramsim3main interface/test.cpp interface/ramsim.cpp)
+add_executable(dramsim3main src/main.cc src/cpu.cc)
 target_link_libraries(dramsim3main PRIVATE dramsim3 args)
 target_compile_options(dramsim3main PRIVATE)
 set_target_properties(dramsim3main PROPERTIES

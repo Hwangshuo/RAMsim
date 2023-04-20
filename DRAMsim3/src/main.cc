@@ -1,18 +1,7 @@
 #include <iostream>
 #include "./../ext/headers/args.hxx"
 #include "cpu.h"
-// #include"bankstate.h"
-// #include"channel_state.h"
-// #include"command_queue.h"
-// #include"common.h"
-// #include"configuration.h"
-// #include"controller.h"
-// #include"dram_system.h"
-// #include"hmc.h"
-// #include"refresh.h"
-// #include"simple_stats.h"
-// #include"timing.h"
-// #include"memory_system.h"
+
 using namespace dramsim3;
 
 int main(int argc, const char **argv) {
@@ -74,7 +63,6 @@ int main(int argc, const char **argv) {
 
     for (uint64_t clk = 0; clk < cycles; clk++) {
         cpu->ClockTick();
-
     }
     cpu->PrintStats();
 

@@ -14,12 +14,19 @@ CXXFLAGS=-Wall -O3 -fPIC -std=c++11 $(INC) -DFMT_HEADER_ONLY=1
 LIB_NAME=libdramsim3.so
 EXE_NAME=dramsim3main.out
 
+
+#origin version
+# SRCS = src/bankstate.cc src/channel_state.cc src/command_queue.cc src/common.cc \
+# 		src/configuration.cc src/controller.cc src/dram_system.cc src/hmc.cc \
+# 		src/memory_system.cc src/refresh.cc src/simple_stats.cc src/timing.cc
+
+# we add the interface/ramsim.cpp into the .so
 SRCS = src/bankstate.cc src/channel_state.cc src/command_queue.cc src/common.cc \
 		src/configuration.cc src/controller.cc src/dram_system.cc src/hmc.cc \
-		src/memory_system.cc src/refresh.cc src/simple_stats.cc src/timing.cc interface/ramsim.cpp 
+		src/memory_system.cc src/refresh.cc src/simple_stats.cc src/timing.cc ../interface/ramsim.cpp
 
 # EXE_SRCS = src/cpu.cc src/main.cc
-EXE_SRCS =interface/test.cpp
+EXE_SRCS = ../interface/test.cpp 
 
 OBJECTS = $(addsuffix .o, $(basename $(SRCS)))
 EXE_OBJS = $(addsuffix .o, $(basename $(EXE_SRCS)))

@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "configuration.h"
-#include "../ext/headers/json.hpp"
+#include "json.hpp"
 
 namespace dramsim3 {
 

@@ -1,5 +1,0 @@
-/home/hs/NP_project/verilator_test/DRAMsim3/CMakeFiles/dramsim3.dir
-/home/hs/NP_project/verilator_test/DRAMsim3/CMakeFiles/dramsim3main.dir
-/home/hs/NP_project/verilator_test/DRAMsim3/CMakeFiles/dramsim3test.dir
-/home/hs/NP_project/verilator_test/DRAMsim3/CMakeFiles/edit_cache.dir
-/home/hs/NP_project/verilator_test/DRAMsim3/CMakeFiles/rebuild_cache.dir

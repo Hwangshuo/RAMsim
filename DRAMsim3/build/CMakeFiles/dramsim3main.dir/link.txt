@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 -DNDEBUG -rdynamic CMakeFiles/dramsim3main.dir/interface/test.cpp.o CMakeFiles/dramsim3main.dir/interface/ramsim.cpp.o -o dramsim3main  -Wl,-rpath,/home/hs/NP_project/verilator_test/DRAMsim3 ../libdramsim3.so 

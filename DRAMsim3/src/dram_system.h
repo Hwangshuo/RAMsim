@@ -15,10 +15,6 @@
 #endif  // THERMAL
 
 namespace dramsim3 {
-extern bool write_fin;
-extern bool read_fin;
-extern uint64_t write_addr;
-extern uint64_t read_addr;
 
 class BaseDRAMSystem {
    public:
@@ -54,7 +50,7 @@ class BaseDRAMSystem {
 #endif  // THERMAL
 
     uint64_t clk_;
-    std::vector<Controller *> ctrls_;
+    std::vector<Controller*> ctrls_;
 
 #ifdef ADDR_TRACE
     std::ofstream address_trace_;

@@ -21,8 +21,7 @@ MemorySystem::~MemorySystem() {
     delete (config_);
 }
 
-void MemorySystem::ClockTick() { 
-    dram_system_->ClockTick(); }
+void MemorySystem::ClockTick() { dram_system_->ClockTick(); }
 
 double MemorySystem::GetTCK() const { return config_->tCK; }
 

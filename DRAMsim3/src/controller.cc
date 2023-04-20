@@ -148,7 +148,7 @@ void Controller::ClockTick() {
     return;
 }
 
-bool Controller::WillAcceptTransaction(uint64_t hex_addr, bool is_write) const {//判断能否发出请求
+bool Controller::WillAcceptTransaction(uint64_t hex_addr, bool is_write) const {
     if (is_unified_queue_) {
         return unified_queue_.size() < unified_queue_.capacity();
     } else if (!is_write) {
@@ -164,7 +164,6 @@ bool Controller::AddTransaction(Transaction trans) {
     last_trans_clk_ = clk_;
 
     if (trans.is_write) {
-
         if (pending_wr_q_.count(trans.addr) == 0) {  // can not merge writes
             pending_wr_q_.insert(std::make_pair(trans.addr, trans));
             if (is_unified_queue_) {
@@ -173,27 +172,16 @@ bool Controller::AddTransaction(Transaction trans) {
                 write_buffer_.push_back(trans);
             }
         }
-
         trans.complete_cycle = clk_ + 1;
-
-        // printf("%ld\t",trans.added_cycle);
-        // printf("%ld\t",trans.complete_cycle);
-        // printf("%d\n",trans.is_write);
         return_queue_.push_back(trans);
         return true;
     } else {  // read
         // if in write buffer, use the write buffer value
-
         if (pending_wr_q_.count(trans.addr) > 0) {
             trans.complete_cycle = clk_ + 1;
             return_queue_.push_back(trans);
             return true;
         }
-        // printf("\tread request , addr=%p\t",trans.addr);
-        // printf("%ld\t",trans.added_cycle);
-        // printf("%ld\t",trans.complete_cycle);
-        // printf("%d\n",trans.is_write);
-
         pending_rd_q_.insert(std::make_pair(trans.addr, trans));
         if (pending_rd_q_.count(trans.addr) == 1) {
             if (is_unified_queue_) {
@@ -202,7 +190,6 @@ bool Controller::AddTransaction(Transaction trans) {
                 read_queue_.push_back(trans);
             }
         }
-
         return true;
     }
 }

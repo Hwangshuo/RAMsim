@@ -5,7 +5,7 @@
 #include <string>
 #include "common.h"
 
-#include "../ext/headers/INIReader.h"
+#include "INIReader.h"
 
 namespace dramsim3 {
 

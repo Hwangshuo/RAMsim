@@ -1,11 +1,9 @@
 #include "dram_system.h"
+
 #include <assert.h>
 
 namespace dramsim3 {
-bool write_fin = false;
-bool read_fin = false;
-uint64_t write_addr = 0;
-uint64_t read_addr = 0;
+
 // alternative way is to assign the id in constructor but this is less
 // destructive
 int BaseDRAMSystem::total_channels_ = 0;
@@ -146,30 +144,15 @@ bool JedecDRAMSystem::AddTransaction(uint64_t hex_addr, bool is_write) {
     return ok;
 }
 
-void JedecDRAMSystem::
-    ClockTick() {  // 判断是否读写完成,可能同时会有多个数据读出来
-    int read_finish_num = 1;
-    int write_finish_num = 1;
+void JedecDRAMSystem::ClockTick() {
     for (size_t i = 0; i < ctrls_.size(); i++) {
-        read_fin = 0;
-        write_fin = 0;
         // look ahead and return earlier
         while (true) {
             auto pair = ctrls_[i]->ReturnDoneTrans(clk_);
             if (pair.second == 1) {
                 write_callback_(pair.first);
-                printf("\twrite fin addr=%p,",pair.first);
-                read_fin = 0;
-                write_fin = 1;
-                write_addr = pair.first;
-                write_finish_num++;
             } else if (pair.second == 0) {
                 read_callback_(pair.first);
-                printf("\tread fin addr=%p,", pair.first);
-                read_fin = 1;
-                write_fin = 0;
-                read_addr = pair.first;
-                read_finish_num++;
             } else {
                 break;
             }
@@ -178,13 +161,11 @@ void JedecDRAMSystem::
     for (size_t i = 0; i < ctrls_.size(); i++) {
         ctrls_[i]->ClockTick();
     }
-
     clk_++;
 
     if (clk_ % config_.epoch_period == 0) {
         PrintEpochStats();
     }
-
     return;
 }
 
@@ -199,7 +180,6 @@ IdealDRAMSystem::~IdealDRAMSystem() {}
 bool IdealDRAMSystem::AddTransaction(uint64_t hex_addr, bool is_write) {
     auto trans = Transaction(hex_addr, is_write);
     trans.added_cycle = clk_;
-    std::cout << "trans.added_cycle" << trans.added_cycle << std::endl;
     infinite_buffer_q_.push_back(trans);
     return true;
 }
