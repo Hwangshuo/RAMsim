@@ -158,14 +158,14 @@ void JedecDRAMSystem::
             auto pair = ctrls_[i]->ReturnDoneTrans(clk_);
             if (pair.second == 1) {
                 write_callback_(pair.first);
-                printf("\twrite fin %d ,", write_finish_num);
+                printf("\twrite fin addr=%p,",pair.first);
                 read_fin = 0;
                 write_fin = 1;
                 write_addr = pair.first;
                 write_finish_num++;
             } else if (pair.second == 0) {
                 read_callback_(pair.first);
-                printf("\tread fin %d  ,", read_finish_num);
+                printf("\tread fin addr=%p,", pair.first);
                 read_fin = 1;
                 write_fin = 0;
                 read_addr = pair.first;

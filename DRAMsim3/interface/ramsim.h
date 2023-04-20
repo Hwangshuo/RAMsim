@@ -29,7 +29,7 @@ class CPU {
     bool isReadReady(uint64_t addr);  //能否接收读请求
     void readValid(uint64_t );  //发送读请求
     void writeValid(uint64_t ,uint64_t );  //发送写请求
-    bool isWrtieReady(uint64_t addr);  // 能否接收写请求
+    bool isWriteReady(uint64_t addr);  // 能否接收写请求
     bool isReadFinish();  // 读是否完成
     bool isWriteFinish();  // 写是否完成 }
 

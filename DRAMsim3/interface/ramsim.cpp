@@ -7,7 +7,7 @@ namespace dramsim3 {
 //     return true;
 // }
 
-// bool StreamCPU::isWrtieReady()  // 能否
+// bool StreamCPU::isWriteReady()  // 能否
 // {
 //     return true;
 // }
@@ -36,12 +36,14 @@ bool CPU::isReadReady(uint64_t addr) {
 }
 
 void CPU::readValid(uint64_t addr) {
+    if(isReadReady(addr))
     memory_system_.AddTransaction(addr, false);
     printf("\tread request , addr=%p\t", addr);
     return;
 }
 
 void CPU::writeValid(uint64_t addr, uint64_t wdata) {
+    if(isWriteReady(addr))
     memory_system_.AddTransaction(addr, true);
     ram[addr] = wdata;
     printf("\twrite request , addr=%p, wdata=%ld\t", addr, wdata);
@@ -49,7 +51,7 @@ void CPU::writeValid(uint64_t addr, uint64_t wdata) {
     return;
 }
 
-bool CPU::isWrtieReady(uint64_t addr) {
+bool CPU::isWriteReady(uint64_t addr) {
     return memory_system_.WillAcceptTransaction(addr, true);
 }
 
