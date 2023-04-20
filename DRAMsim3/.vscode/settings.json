@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "args.hxx": "c",
+        "*.tcc": "cpp",
+        "concepts": "cpp",
+        "new": "cpp",
+        "sstream": "cpp",
+        "ostream": "cpp",
+        "functional": "cpp"
+    }
+}
