@@ -5,7 +5,7 @@
 
 #include <random>
 #include <string>
-#include "../DRAMsim3/src/memory_system.h"
+#include "memory_system.h"
 #include <map>
 #include <queue>
 #include <utility>
