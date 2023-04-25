@@ -12,9 +12,7 @@
 
 namespace dramsim3
 {
-
     extern uint64_t rdata;
-    extern uint64_t return_raddr;
     extern bool rvalid;
     extern bool wvalid;
 
@@ -22,8 +20,33 @@ namespace dramsim3
     extern map<uint64_t, uint64_t> ram;
     using std::queue;
     extern queue<uint64_t> write_addr_return_queue;
-    extern queue<uint64_t> read_addr_return_queue;
-    extern queue<uint64_t> read_value_return_queue;
+
+    const uint64_t MAX_SIZE = 100;
+
+    class Queue
+    {
+    private:
+        uint64_t data[MAX_SIZE][3];
+        uint64_t head, rear;
+
+    public:
+        Queue()
+        {
+            head = rear = 1;
+        };
+        void push(uint64_t);
+        uint64_t pop();
+        uint64_t front();
+        uint64_t back();
+        bool empty();
+        bool full();
+        uint64_t find(uint64_t);
+        void replace(uint64_t, uint64_t);
+        bool isReady();
+        uint64_t getHeadValue();
+        uint64_t size();
+    };
+
     class RAM_module
     {
     public:
@@ -42,11 +65,12 @@ namespace dramsim3
         void writeValid(uint64_t, uint64_t); // 发送写请求
         bool isWriteReady(uint64_t addr);    // 能否接收写请求
         bool isReadFinish();                 // 读是否完成
-        bool isWriteFinish();                // 写是否完成 }
+        bool isWriteFinish();                // 写是否完成 
 
     protected:
         MemorySystem memory_system_;
         uint64_t clk_;
+        Queue read_request_queue;
     };
 
 } // namespace dramsim3
