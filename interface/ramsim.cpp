@@ -17,13 +17,13 @@ namespace dramsim3
     {
         uint64_t index = read_request_queue.find(addr);
 
-        if (index != 101) //
+        if (index != MAX_SIZE + 1) //
         {
             read_request_queue.replace(index, ram[addr]);
         }
         else
         {
-            std::cout << "error";
+            printf("queue error at when ReadCallBack");
             exit(0);
         }
         return;
@@ -37,11 +37,15 @@ namespace dramsim3
     void RAM_module::ClockTick()
     {
 
+#ifdef RAM_debug
         printf("clk = %3ld\t", clk_);
+
+#endif
         memory_system_.ClockTick();
         isReadFinish();
         isWriteFinish();
         clk_++;
+
         return;
     }
 
@@ -57,8 +61,9 @@ namespace dramsim3
             memory_system_.AddTransaction(addr, false);
             read_request_queue.push(addr); // 将读请求发送到读请求队列中
         }
-
+#ifdef RAM_debug
         printf("\tread request , addr=%ld\t", addr);
+#endif
         return;
     }
 
@@ -72,7 +77,9 @@ namespace dramsim3
         if (isWriteReady(addr))
             memory_system_.AddTransaction(addr, true);
         ram[addr] = wdata; // 往数组中存放读取结果
+#ifdef RAM_debug
         printf("\twrite request , addr=%ld, wdata=%ld\t", addr, wdata);
+#endif
         // ram.insert(pair<uint64_t, uint64_t>(addr, wdata));
         return;
     }
@@ -80,13 +87,15 @@ namespace dramsim3
     bool RAM_module::isReadFinish()
     {
 
-        std::cout << read_request_queue.size();
+        // printf("queue sieze: %ld",read_request_queue.size());
 
         if (read_request_queue.isReady()) // 队首元素是否准备好
         {
             rvalid = true;
             rdata = read_request_queue.getHeadValue();
+#ifdef RAM_debug
             printf("read finish addr:%ld data:%ld", read_request_queue.front(), read_request_queue.getHeadValue());
+#endif
             read_request_queue.pop();
             return true;
         }
@@ -101,11 +110,14 @@ namespace dramsim3
     {
         if (!write_addr_return_queue.empty())
         {
-            uint64_t return_waddr;
+
             wvalid = true;
-            return_waddr = write_addr_return_queue.front();
             write_addr_return_queue.pop();
-            printf("write finish addr:%ld data:%ld", return_waddr, rdata);
+#ifdef RAM_debug
+            uint64_t return_waddr;
+            return_waddr = write_addr_return_queue.front();
+            printf("write finish addr:%ld data:%ld", return_waddr, ram[return_waddr]);
+#endif
             return true;
         }
         else
@@ -116,14 +128,14 @@ namespace dramsim3
     }
     uint64_t Queue::size()
     {
-        // printf("rear:%ld head:%ld", rear, head);
+
         return (rear + MAX_SIZE - head) % MAX_SIZE;
     }
     uint64_t Queue::getHeadValue()
     {
         if (empty())
         {
-            // std::cout << "Queue is empty." << std::endl;
+
             return 0;
         }
         return data[head][2];
@@ -133,7 +145,7 @@ namespace dramsim3
     {
         if (empty())
         {
-            // std::cout << "Queue is empty." << std::endl;
+
             return false;
         }
         return data[head][1];
@@ -147,7 +159,9 @@ namespace dramsim3
     {
         if ((rear + 1) % MAX_SIZE == head)
         {
+#ifdef RAM_debug
             std::cout << "Queue is full." << std::endl;
+#endif
             return;
         }
         data[rear][0] = x;
@@ -159,7 +173,9 @@ namespace dramsim3
     {
         if (head == rear)
         {
+#ifdef RAM_debug
             std::cout << "Queue is empty." << std::endl;
+#endif
             return -1;
         }
         uint64_t x = data[head][0];
@@ -185,13 +201,15 @@ namespace dramsim3
             }
             i = (i + 1) % MAX_SIZE;
         }
-        return 101;
+        return MAX_SIZE + 1;
     }
     uint64_t Queue::front()
     {
         if (empty())
         {
+#ifdef RAM_debug
             std::cout << "Queue is empty." << std::endl;
+#endif
             return -1;
         }
         return data[head][0];
@@ -200,7 +218,9 @@ namespace dramsim3
     {
         if (empty())
         {
+#ifdef RAM_debug
             std::cout << "Queue is empty." << std::endl;
+#endif
             return -1;
         }
         return data[(rear - 1 + MAX_SIZE) % MAX_SIZE][0];

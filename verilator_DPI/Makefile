@@ -19,7 +19,7 @@ $(DRAMsim3_LIB_NAME):
 	-@cp  $(DRAMsim3_DIR)/libdramsim3.so lib/
 
 $(EXE):$(DRAMsim3_LIB_NAME)
-	verilator  -cc --exe  -j top.v sim_main.cpp -LDFLAGS "  -L../lib -ldramsim3 -Wl,-rpath=lib"
+	verilator  -cc --exe  -j top.sv sim_main.cpp ramsimDPI.cpp -LDFLAGS "  -L../lib -ldramsim3 -Wl,-rpath=lib"
 	CXXFLAGS=$(INC) make -j -C obj_dir -f Vtop.mk Vtop 
 	-@echo -e "\n[Vtop translation and  compilation successful , You can use \"make run\" to performance it] "
 

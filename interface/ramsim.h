@@ -55,7 +55,7 @@ namespace dramsim3
                   config_file, output_dir,
                   std::bind(&RAM_module::ReadCallBack, this, std::placeholders::_1),
                   std::bind(&RAM_module::WriteCallBack, this, std::placeholders::_1)),
-              clk_(0) {}
+              clk_(0) {rdata=0;}
         void ClockTick();
         void ReadCallBack(uint64_t addr);
         void WriteCallBack(uint64_t addr);
