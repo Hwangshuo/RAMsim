@@ -4,8 +4,6 @@ namespace dramsim3
 {
 
     uint64_t rdata;
-    bool rvalid;
-    bool wvalid;
     using std::map;
     using std::pair;
 
@@ -42,8 +40,6 @@ namespace dramsim3
 
 #endif
         memory_system_.ClockTick();
-        isReadFinish();
-        isWriteFinish();
         clk_++;
 
         return;
@@ -91,17 +87,17 @@ namespace dramsim3
 
         if (read_request_queue.isReady()) // 队首元素是否准备好
         {
-            rvalid = true;
             rdata = read_request_queue.getHeadValue();
 #ifdef RAM_debug
             printf("read finish addr:%ld data:%ld", read_request_queue.front(), read_request_queue.getHeadValue());
 #endif
+
             read_request_queue.pop();
             return true;
         }
         else
         {
-            rvalid = false;
+
             return false;
         }
     }
@@ -110,8 +106,6 @@ namespace dramsim3
     {
         if (!write_addr_return_queue.empty())
         {
-
-            wvalid = true;
 
             write_addr_return_queue.pop();
 #ifdef RAM_debug
@@ -123,7 +117,7 @@ namespace dramsim3
         }
         else
         {
-            wvalid = false;
+
             return false;
         }
     }
@@ -149,6 +143,7 @@ namespace dramsim3
 
             return false;
         }
+
         return data[head][1];
     }
     void Queue::replace(uint64_t index, uint64_t rdata)

@@ -10,7 +10,7 @@ DRAMsim3_MEMORY_SYSTEM_DIR:=../../DRAMsim3/src
 
 EXE:=obj_dir/Vtop
 
-INC:="-I$(DRAMsim3_INTERFACE_DIR) -I$(DRAMsim3_MEMORY_SYSTEM_DIR) -I$(DRAMsim3_FMT_LIB_DIR) -I$(DRAMsim3_INI_LIB_DIR) -I$(DRAMsim3_ARGS_LIB_DIR) -I$(DRAMsim3_JSON_LIB_DIR)"
+INC:="-DDUMP_TRACE  -I$(DRAMsim3_INTERFACE_DIR) -I$(DRAMsim3_MEMORY_SYSTEM_DIR) -I$(DRAMsim3_FMT_LIB_DIR) -I$(DRAMsim3_INI_LIB_DIR) -I$(DRAMsim3_ARGS_LIB_DIR) -I$(DRAMsim3_JSON_LIB_DIR)"
 
 ALL:$(EXE)
 
@@ -19,7 +19,7 @@ $(DRAMsim3_LIB_NAME):
 	-@cp  $(DRAMsim3_DIR)/libdramsim3.so lib/
 
 $(EXE):$(DRAMsim3_LIB_NAME)
-	verilator  -cc --exe  -j top.sv sim_main.cpp ramsimDPI.cpp -LDFLAGS "  -L../lib -ldramsim3 -Wl,-rpath=lib"
+	verilator  -cc --exe --trace -j top.sv sim_main.cpp ramsimDPI.cpp -LDFLAGS "  -L../lib -ldramsim3 -Wl,-rpath=lib"
 	CXXFLAGS=$(INC) make -j -C obj_dir -f Vtop.mk Vtop 
 	-@echo -e "\n[Vtop translation and  compilation successful , You can use \"make run\" to performance it] "
 
@@ -28,7 +28,11 @@ run:
 
 clean:
 	-@rm -rf obj_dir
+	-@rm -rf ../interface/ramsim.h.gch
 	-@rm -f lib/libdramsim3.so
 	-@cd  $(DRAMsim3_DIR) && $(MAKE) clean
+	-@rm  wave.vcd
+	-@rm dramsim3.json dramsim3.txt
+	-@rm -rf logs
 
 .PHONY: clean ALL

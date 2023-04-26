@@ -13,8 +13,6 @@
 namespace dramsim3
 {
     extern uint64_t rdata;
-    extern bool rvalid;
-    extern bool wvalid;
 
     using std::map;
     extern map<uint64_t, uint64_t> ram;
@@ -55,7 +53,7 @@ namespace dramsim3
                   config_file, output_dir,
                   std::bind(&RAM_module::ReadCallBack, this, std::placeholders::_1),
                   std::bind(&RAM_module::WriteCallBack, this, std::placeholders::_1)),
-              clk_(0) {rdata=0;}
+              clk_(0) { rdata = 0; }
         void ClockTick();
         void ReadCallBack(uint64_t addr);
         void WriteCallBack(uint64_t addr);
@@ -65,7 +63,7 @@ namespace dramsim3
         void writeValid(uint64_t, uint64_t); // 发送写请求
         bool isWriteReady(uint64_t addr);    // 能否接收写请求
         bool isReadFinish();                 // 读是否完成
-        bool isWriteFinish();                // 写是否完成 
+        bool isWriteFinish();                // 写是否完成
 
     protected:
         MemorySystem memory_system_;

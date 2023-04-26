@@ -55,15 +55,14 @@ module RAMsim_DPI (
         readValid(raddr);  //  发送读请求
       end
 
-      writeReady <= isWriteReady(waddr);  // 能否接收读请求
+      writeReady <= isWriteReady(waddr);  // 能否接收写请求
       if (wvalid == 1 && writeReady == 1) begin
         writeValid(waddr, wdata);  //  发送读请求
       end
 
-      readfin <= isReadFinish();  // 能否接收读请求
+      readfin <= isReadFinish();  //读是否完成
+      writefin <= isWriteFinish();  //写是否完成
       rdata <= readData();
-      writefin <= isWriteFinish();
-    //   $display("");
 
     end
   end

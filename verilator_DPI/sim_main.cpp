@@ -2,6 +2,7 @@
 // Include model header, generated from Verilating "top.v"
 #include "Vtop.h"
 #include <memory>
+#include "verilated_vcd_c.h"
 
 double sc_time_stamp() { return 0; }
 int main(int argc, char **argv)
@@ -14,7 +15,14 @@ int main(int argc, char **argv)
     contextp->debug(0);
     contextp->randReset(2);
     contextp->commandArgs(argc, argv);
+
     const std::unique_ptr<Vtop> top{new Vtop{contextp.get(), "TOP"}};
+#ifdef DUMP_TRACE
+    contextp->traceEverOn(true);
+    VerilatedVcdC *tfp = new VerilatedVcdC;
+    top->trace(tfp, 0);
+    tfp->open("wave.vcd"); // 设置输出的文件wave.vcd
+#endif
     top->rst_n = 0;
     top->clk = 0;
     top->rvalid = 0;
@@ -43,18 +51,18 @@ int main(int argc, char **argv)
                 top->rst_n = 1; // Deassert reset
             }
 
-            if (contextp->time() > 30 && contextp->time() < 40)
-            {
-                top->wvalid = 1; // Assert reset
-                top->waddr = i - 30;
-                top->wdata = (i - 30) * 1000;
-            }
-            else
-            {
-                top->wvalid = 0; // Assert reset
-                top->waddr = 0;
-                top->wdata = 0;
-            }
+            // if (contextp->time() > 30 && contextp->time() < 40)
+            // {
+            //     top->wvalid = 1; // Assert reset
+            //     top->waddr = i - 30;
+            //     top->wdata = (i - 30) * 1000;
+            // }
+            // else
+            // {
+            //     top->wvalid = 0; // Assert reset
+            //     top->waddr = 0;
+            //     top->wdata = 0;
+            // }
 
             if (contextp->time() > 60 && contextp->time() < 70)
             {
@@ -67,7 +75,7 @@ int main(int argc, char **argv)
                 top->raddr = 0;
             }
 
-            if (contextp->time() > 100)
+            if (contextp->time() > 300)
                 break;
         }
         i++;
@@ -84,9 +92,13 @@ int main(int argc, char **argv)
                   top->readReady,
                   top->writeReady,
                   top->rdata);
-        // VL_PRINTF("\n[%" PRId64 "]\n",
-        //           contextp->time());
+#ifdef DUMP_TRACE
+        tfp->dump(contextp->time()); // dump wave
+#endif
     }
     top->final();
+#ifdef DUMP_TRACE
+    tfp->close();
+#endif
     return 0;
 }
