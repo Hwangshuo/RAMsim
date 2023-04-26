@@ -112,6 +112,7 @@ namespace dramsim3
         {
 
             wvalid = true;
+
             write_addr_return_queue.pop();
 #ifdef RAM_debug
             uint64_t return_waddr;
