@@ -1,6 +1,6 @@
 #ifndef __RAMSIMDPI_H
 #define __RAMSIMDPI_H
-#include <svdpi.h>
+#include "/home/hs/tool/synopsys/vcs2018/vcs/O-2018.09-SP2/include/svdpi.h"
 #include <iostream>
 #include "ramsim.h"
 extern "C" svBit isReadReady(long int raddr);

@@ -3,7 +3,7 @@
 // Define the DPI function
 // The function takes two 32-bit integers as input and returns a 32-bit integer
 
-std::string config_file = "../../DRAMsim3/configs/DDR3_1Gb_x8_1333.ini";
+std::string config_file = "DRAMsim3/configs/DDR3_1Gb_x8_1333.ini";
 std::string output_dir = ".";
 bool rst = false;
 using dramsim3::RAM_module;

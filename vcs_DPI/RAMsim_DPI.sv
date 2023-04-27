@@ -1,27 +1,5 @@
 `timescale 1ns / 1ns
 
-import "DPI-C" context function bit isReadReady(longint raddr);  // sine function in C math library
-
-import "DPI-C" context function bit isWriteReady(longint raddr);
-
-import "DPI-C" context function void initial_RAM();  // sine function in C math library
-
-import "DPI-C" context function void ClockTick();  // sine function in C math library
-
-import "DPI-C" context function void readValid(longint raddr);
-
-import "DPI-C" context function void writeValid(
-  longint waddr,
-  longint wdata
-);
-
-import "DPI-C" context function longint readData();
-
-import "DPI-C" context function bit isReadFinish();
-
-import "DPI-C" context function bit isWriteFinish();
-
-
 
 module RAMsim_DPI (
 
@@ -40,7 +18,28 @@ module RAMsim_DPI (
 
 
 );
+  import "DPI-C" context function bit isReadReady(
+    longint raddr
+  );  // sine function in C math library
 
+  import "DPI-C" context function bit isWriteReady(longint raddr);
+
+  import "DPI-C" context function void initial_RAM();  // sine function in C math library
+
+  import "DPI-C" context function void ClockTick();  // sine function in C math library
+
+  import "DPI-C" context function void readValid(longint raddr);
+
+  import "DPI-C" context function void writeValid(
+    longint waddr,
+    longint wdata
+  );
+
+  import "DPI-C" context function longint readData();
+
+  import "DPI-C" context function bit isReadFinish();
+
+  import "DPI-C" context function bit isWriteFinish();
 
   //检测到复位下降沿 即rst_n 1->0  即表示复位 
 
